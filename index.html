@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andhika Putra | Teknik Pengolahan Limbah</title>
+
+  <!-- ==================== CDN LIBRARIES ==================== -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  
+  <!-- ==================== CUSTOM CSS ==================== -->
+  <style>
+    :root {
+      --eco-green: #2E8B57;
+      --eco-green-light: #3dba78;
+      --eco-green-dim: rgba(46, 139, 87, 0.15);
+      --eco-blue: #0077B6;
+      --eco-blue-light: #00a8e8;
+      --eco-blue-dim: rgba(0, 119, 182, 0.15);
+      --bg-primary: #0a0f0d;
+      --bg-secondary: #0e1610;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --bg-card-hover: rgba(255, 255, 255, 0.07);
+      --bg-glass: rgba(14, 24, 18, 0.7);
+      --text-primary: #e8f5ee;
+      --text-secondary: #9ab8a8;
+      --text-muted: #5a7a68;
+      --border-color: rgba(46, 139, 87, 0.2);
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --shadow-eco: 0 0 30px rgba(46, 139, 87, 0.15);
+      --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --shadow-btn: 0 4px 20px rgba(46, 139, 87, 0.3);
+      --gradient-hero: linear-gradient(135deg, #0a0f0d 0%, #0e1a12 50%, #061018 100%);
+      --gradient-eco: linear-gradient(135deg, var(--eco-green), var(--eco-blue));
+      --gradient-card: linear-gradient(135deg, rgba(46,139,87,0.08), rgba(0,119,182,0.05));
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f0f7f2;
+      --bg-secondary: #e6f2eb;
+      --bg-card: rgba(255, 255, 255, 0.7);
+      --bg-card-hover: rgba(255, 255, 255, 0.9);
+      --bg-glass: rgba(240, 247, 242, 0.85);
+      --text-primary: #0d2418;
+      --text-secondary: #2d5a3d;
+      --text-muted: #6b9a7c;
+      --border-color: rgba(46, 139, 87, 0.25);
+      --border-glass: rgba(46, 139, 87, 0.15);
+      --shadow-card: 0 8px 32px rgba(46, 139, 87, 0.12);
+      --gradient-hero: linear-gradient(135deg, #e8f5ee 0%, #d4edde 50%, #dceef5 100%);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--font-body); background-color: var(--bg-primary); color: var(--text-primary); line-height: 1.7; overflow-x: hidden; transition: background-color 0.4s ease, color 0.4s ease; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--eco-green); border-radius: 3px; }
+    ::selection { background: var(--eco-green-dim); color: var(--eco-green-light); }
+
+    #loader { position: fixed; inset: 0; background: var(--bg-primary); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease; }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-inner { text-align: center; position: relative; }
+    .loader-ring { width: 80px; height: 80px; border: 3px solid var(--border-color); border-top-color: var(--eco-green); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+    .loader-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%); font-size: 1.5rem; color: var(--eco-green); animation: pulse-eco 1.5s ease-in-out infinite; }
+    .loader-text { margin-top: 1rem; color: var(--text-secondary); font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse-eco { 0%, 100% { opacity: 1; transform: translate(-50%, -55%) scale(1); } 50% { opacity: 0.6; transform: translate(-50%, -55%) scale(0.9); } }
+
+    #navbar { background: transparent; padding: 1.2rem 0; transition: var(--transition); border-bottom: 1px solid transparent; z-index: 1000; }
+    #navbar.scrolled { background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom-color: var(--border-color); padding: 0.8rem 0; box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+    .navbar-brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .brand-icon { width: 36px; height: 36px; background: var(--gradient-eco); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: white; }
+    .brand-text { font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; color: var(--text-primary); }
+    .brand-accent { color: var(--eco-green-light); }
+    .nav-link { font-family: var(--font-display); font-weight: 600; font-size: 0.88rem; color: var(--text-secondary) !important; letter-spacing: 0.5px; padding: 0.5rem 0.8rem !important; border-radius: 8px; transition: var(--transition); position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--gradient-eco); border-radius: 1px; transition: width 0.3s ease; }
+    .nav-link:hover, .nav-link.active { color: var(--eco-green-light) !important; }
+    .nav-link:hover::after, .nav-link.active::after { width: 60%; }
+    .navbar-toggler { border: none; background: none; padding: 0.4rem; display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+    .toggler-line { display: block; width: 24px; height: 2px; background: var(--eco-green-light); border-radius: 2px; transition: var(--transition); }
+    .theme-toggle { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--border-color); background: var(--bg-card); color: var(--eco-green-light); font-size: 0.95rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+    .theme-toggle:hover { background: var(--eco-green-dim); border-color: var(--eco-green); transform: rotate(20deg); }
+
+    .section-padding { padding: 100px 0; }
+    .section-header { margin-bottom: 4rem; }
+    .section-label { display: inline-block; font-family: var(--font-display); font-size: 0.78rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--eco-green-light); background: var(--eco-green-dim); padding: 0.3rem 1rem; border-radius: 20px; border: 1px solid var(--eco-green-dim); margin-bottom: 1rem; }
+    .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; color: var(--text-primary); margin-bottom: 1.5rem; }
+    .text-eco { color: var(--eco-green-light); }
+    .section-divider { width: 60px; height: 3px; background: var(--gradient-eco); border-radius: 2px; margin: 0 auto; }
+    .glass-card { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: var(--shadow-card); transition: var(--transition); }
+    .glass-card:hover { background: var(--bg-card-hover); border-color: var(--border-color); transform: translateY(-3px); box-shadow: var(--shadow-eco), var(--shadow-card); }
+
+    .btn-eco { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; letter-spacing: 0.5px; border-radius: var(--radius-md); padding: 0.7rem 1.6rem; border: none; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .btn-primary-eco { background: var(--gradient-eco); color: white !important; box-shadow: var(--shadow-btn); }
+    .btn-primary-eco:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(46, 139, 87, 0.45); filter: brightness(1.1); }
+    .btn-outline-eco { background: transparent; color: var(--eco-green-light) !important; border: 1.5px solid var(--eco-green); }
+    .btn-outline-eco:hover { background: var(--eco-green-dim); transform: translateY(-2px); color: var(--eco-green-light) !important; }
+    .btn-ghost-eco { background: var(--bg-card); color: var(--text-secondary) !important; border: 1.5px solid var(--border-glass); }
+    .btn-ghost-eco:hover { background: var(--bg-card-hover); color: var(--text-primary) !important; transform: translateY(-2px); }
+
+    .hero-section { position: relative; min-height: 100vh; background: var(--gradient-hero); overflow: hidden; display: flex; align-items: center; }
+    #heroCanvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.5; }
+    .eco-grid-overlay { position: absolute; inset: 0; background-image: linear-gradient(rgba(46,139,87,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(46,139,87,0.04) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+    .hero-container { position: relative; z-index: 2; padding-top: 80px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--eco-green-dim); border: 1px solid var(--border-color); border-radius: 30px; padding: 0.4rem 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--eco-green-light); font-weight: 500; }
+    .badge-dot { width: 8px; height: 8px; background: var(--eco-green-light); border-radius: 50%; animation: blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .hero-name { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; color: var(--text-primary); margin-bottom: 1rem; }
+    .name-highlight { background: var(--gradient-eco); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-typed-wrapper { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 1.05rem; color: var(--text-secondary); font-weight: 400; font-style: italic; min-height: 2rem; }
+    .typed-prefix { color: var(--eco-green-light); font-size: 1.4rem; }
+    .typed-cursor { color: var(--eco-green-light); animation: blink 0.8s step-end infinite; font-weight: 300; }
+    .hero-desc { color: var(--text-secondary); font-size: 1.05rem; max-width: 500px; margin-bottom: 2rem; line-height: 1.8; }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2rem; }
+    .hero-socials { display: flex; gap: 0.6rem; }
+    .social-pill { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--border-color); background: var(--bg-card); color: var(--text-secondary); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; text-decoration: none; transition: var(--transition); }
+    .social-pill:hover { background: var(--eco-green-dim); border-color: var(--eco-green); color: var(--eco-green-light); transform: translateY(-3px); }
+    .hero-image-col { display: flex; justify-content: center; }
+    .hero-image-wrapper { position: relative; width: 320px; height: 320px; display: flex; align-items: center; justify-content: center; }
+    .profile-ring { position: absolute; border-radius: 50%; border: 1.5px solid var(--eco-green); animation: orbit 8s linear infinite; }
+    .ring-1 { width: 100%; height: 100%; opacity: 0.2; }
+    .ring-2 { width: 115%; height: 115%; opacity: 0.1; animation-duration: 12s; animation-direction: reverse; }
+    .ring-3 { width: 85%; height: 85%; opacity: 0.15; border-style: dashed; animation-duration: 6s; }
+    @keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .profile-img-container { width: 220px; height: 220px; border-radius: 50%; overflow: hidden; border: 3px solid var(--eco-green); box-shadow: 0 0 40px rgba(46,139,87,0.25), 0 0 0 8px rgba(46,139,87,0.05); position: relative; z-index: 2; background: var(--gradient-card); display: flex; align-items: center; justify-content: center;}
+    
+    .profile-img-container img { width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 5; }
+
+    .floating-badge { position: absolute; background: var(--bg-glass); border: 1px solid var(--border-color); backdrop-filter: blur(10px); border-radius: 30px; padding: 0.4rem 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 600; color: var(--eco-green-light); z-index: 3; animation: float 3s ease-in-out infinite; }
+    .floating-badge i { font-size: 0.9rem; }
+    .badge-top { top: 10%; right: -10%; animation-delay: 0s; }
+    .badge-bottom { bottom: 10%; left: -10%; animation-delay: 1.5s; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.75rem; z-index: 2; }
+    .scroll-mouse { width: 24px; height: 38px; border: 2px solid var(--eco-green); border-radius: 12px; display: flex; justify-content: center; padding-top: 6px; opacity: 0.6; }
+    .scroll-dot { width: 4px; height: 8px; background: var(--eco-green-light); border-radius: 2px; animation: scrollDown 2s ease-in-out infinite; }
+    @keyframes scrollDown { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(14px); opacity: 0; } }
+
+    .about-card-wrapper { position: relative; }
+    .about-img-card { padding: 2rem; text-align: center; }
+    .about-placeholder-img { font-size: 4rem; color: var(--eco-green-light); opacity: 0.7; margin-bottom: 1rem; }
+    .about-placeholder-img p { font-family: var(--font-display); font-weight: 700; color: var(--text-primary); margin: 0.3rem 0 0; }
+    .about-placeholder-img small { color: var(--text-secondary); }
+    .about-tags { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+    .about-tag { background: var(--eco-green-dim); color: var(--eco-green-light); border: 1px solid var(--border-color); border-radius: 20px; padding: 0.25rem 0.8rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem; }
+    .edu-card { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; margin-top: 1rem; border-radius: var(--radius-md); }
+    .edu-icon { font-size: 1.8rem; color: var(--eco-green-light); flex-shrink: 0; }
+    .edu-card strong { display: block; font-size: 0.9rem; color: var(--text-primary); }
+    .edu-card small { color: var(--text-secondary); font-size: 0.8rem; }
+    .about-heading { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+    .about-text { color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.97rem; }
+    .about-info-list { margin: 1.5rem 0; }
+    .info-item { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.9rem; color: var(--text-secondary); }
+    .info-item i { color: var(--eco-green-light); width: 16px; }
+    .eco-progress { height: 6px; background: var(--bg-card); border-radius: 3px; border: 1px solid var(--border-glass); overflow: hidden; }
+    .eco-bar { background: var(--gradient-eco); border-radius: 3px; height: 100%; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); width: 0; }
+    .progress-label { font-size: 0.82rem; color: var(--text-secondary); }
+    .semester-progress { margin-top: 1.5rem; }
+    .stat-card { padding: 1.2rem 0.5rem; border-radius: var(--radius-md); }
+    .stat-number { display: block; font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; background: var(--gradient-eco); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+    .skills-section { background: var(--bg-secondary); }
+    .skills-card { padding: 2rem; height: 100%; }
+    .skills-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--eco-green-light); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .skill-item { margin-bottom: 1.2rem; }
+    .skill-header { display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.88rem; color: var(--text-secondary); }
+    .skill-header i { color: var(--eco-green-light); margin-right: 0.3rem; }
+    .skill-pct { color: var(--eco-green-light); font-weight: 600; font-family: var(--font-display); }
+    .skill-badges-wrapper { padding: 1.5rem 2rem; }
+    .skill-badges-wrapper h5 { font-family: var(--font-display); font-size: 0.95rem; color: var(--eco-green-light); display: flex; align-items: center; gap: 0.4rem; }
+    .skill-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .skill-badge { background: var(--eco-green-dim); color: var(--eco-green-light); border: 1px solid var(--border-color); border-radius: 20px; padding: 0.35rem 1rem; font-size: 0.82rem; font-weight: 500; display: flex; align-items: center; gap: 0.4rem; transition: var(--transition); cursor: default; }
+    .skill-badge:hover { background: var(--eco-green); color: white; transform: translateY(-2px); }
+
+    .project-card { border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: var(--transition); }
+    .project-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.4), var(--shadow-eco); }
+    .project-card-img { height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .project-icon { font-size: 3.5rem; opacity: 0.9; color: white; transition: var(--transition); }
+    .project-card:hover .project-icon { transform: scale(1.15) rotate(-5deg); }
+    .water-bg { background: linear-gradient(135deg, #0077B6, #00a8e8, #023e8a); }
+    .industrial-bg { background: linear-gradient(135deg, #3d405b, #495057, #2E8B57); }
+    .solid-bg { background: linear-gradient(135deg, #6d4c41, #795548, #bf8b6e); }
+    .green-bg { background: linear-gradient(135deg, #2E8B57, #3dba78, #0077B6); }
+    .project-badge { position: absolute; top: 0.8rem; right: 0.8rem; background: rgba(0,0,0,0.5); color: white; border-radius: 20px; padding: 0.2rem 0.7rem; font-size: 0.73rem; font-weight: 600; letter-spacing: 0.5px; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.2); }
+    .project-card-body { padding: 1.4rem; }
+    .project-card-body h5 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+    .project-card-body p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.8rem; line-height: 1.6; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .project-tags span { background: var(--eco-blue-dim); color: var(--eco-blue-light); border-radius: 10px; padding: 0.15rem 0.6rem; font-size: 0.73rem; font-weight: 500; border: 1px solid rgba(0,119,182,0.2); }
+
+    .eco-modal .modal-content { border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1rem; }
+    .modal-header { align-items: center; }
+    .modal-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; }
+    .btn-close-eco { background: var(--bg-card); border: 1px solid var(--border-glass); color: var(--text-secondary); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); font-size: 1rem; }
+    .btn-close-eco:hover { background: rgba(255,50,50,0.1); border-color: rgba(255,50,50,0.3); color: #ff6b6b; }
+    .modal-badge-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .modal-badge.active { display: inline-block; background: var(--eco-green-dim); color: var(--eco-green-light); border: 1px solid var(--border-color); border-radius: 20px; padding: 0.25rem 0.8rem; font-size: 0.8rem; font-weight: 600; }
+    .modal-date { font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem; }
+    .modal-body p { color: var(--text-secondary); font-size: 0.95rem; }
+    .modal-tech-list { margin: 1rem 0; }
+    .modal-tech-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0; font-size: 0.9rem; color: var(--text-secondary); border-bottom: 1px solid var(--border-glass); }
+    .modal-skills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .modal-skills span { background: var(--eco-blue-dim); color: var(--eco-blue-light); border: 1px solid rgba(0,119,182,0.2); border-radius: 20px; padding: 0.25rem 0.8rem; font-size: 0.8rem; }
+
+    .experience-section { background: var(--bg-secondary); }
+    .timeline { position: relative; padding: 0; max-width: 900px; margin: 0 auto; }
+    .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--gradient-eco); transform: translateX(-50%); opacity: 0.4; }
+    .timeline-item { position: relative; width: 50%; padding-right: 3rem; margin-bottom: 2.5rem; left: 0; }
+    .timeline-item.right { left: 50%; padding-right: 0; padding-left: 3rem; }
+    .timeline-dot { position: absolute; right: -20px; top: 20px; width: 40px; height: 40px; border-radius: 50%; background: var(--gradient-eco); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.9rem; z-index: 2; box-shadow: 0 0 20px rgba(46,139,87,0.4); }
+    .timeline-item.right .timeline-dot { right: auto; left: -20px; }
+    .timeline-content { padding: 1.5rem; border-radius: var(--radius-lg); }
+    .timeline-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.4rem; }
+    .timeline-badge { border-radius: 20px; padding: 0.2rem 0.7rem; font-size: 0.73rem; font-weight: 700; letter-spacing: 0.5px; }
+    .timeline-badge.org { background: rgba(46,139,87,0.15); color: var(--eco-green-light); border: 1px solid var(--border-color); }
+    .timeline-badge.seminar { background: rgba(0,119,182,0.15); color: var(--eco-blue-light); border: 1px solid rgba(0,119,182,0.2); }
+    .timeline-badge.volunteer { background: rgba(255,152,0,0.15); color: #ffb74d; border: 1px solid rgba(255,152,0,0.2); }
+    .timeline-badge.workshop { background: rgba(156,39,176,0.15); color: #ce93d8; border: 1px solid rgba(156,39,176,0.2); }
+    .timeline-date { font-size: 0.78rem; color: var(--text-muted); }
+    .timeline-content h5 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; }
+    .timeline-role { font-size: 0.82rem; color: var(--eco-green-light); margin-bottom: 0.6rem; }
+    .timeline-content p { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.8rem; }
+    .timeline-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .timeline-tags span { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 10px; padding: 0.15rem 0.6rem; font-size: 0.73rem; color: var(--text-muted); }
+
+    .cert-card { padding: 1.8rem; display: flex; align-items: flex-start; gap: 1.2rem; position: relative; overflow: hidden; border-radius: var(--radius-lg); flex-direction: column; }
+    .cert-header-flex { display: flex; align-items: flex-start; gap: 1.2rem; width: 100%; }
+    .cert-icon-wrapper { width: 52px; height: 52px; background: var(--gradient-eco); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cert-icon { color: white; font-size: 1.4rem; }
+    .cert-body { flex: 1; }
+    .cert-issuer { font-size: 0.75rem; color: var(--eco-green-light); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .cert-body h6 { font-family: var(--font-display); font-weight: 700; color: var(--text-primary); margin: 0.3rem 0; font-size: 0.93rem; }
+    .cert-date { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem; margin-bottom: 1rem;}
+    .cert-ribbon { position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: var(--gradient-eco); opacity: 0.06; clip-path: polygon(100% 0, 0 0, 100% 100%); }
+
+    .contact-section { background: var(--bg-secondary); }
+    .contact-intro { color: var(--text-secondary); font-size: 0.97rem; line-height: 1.8; margin-bottom: 1.5rem; }
+    .contact-items { display: flex; flex-direction: column; gap: 0.8rem; }
+    .contact-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem; border-radius: var(--radius-md); transition: var(--transition); }
+    .contact-item:hover { transform: translateX(5px); }
+    .contact-item-icon { width: 40px; height: 40px; background: var(--eco-green-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--eco-green-light); font-size: 1rem; flex-shrink: 0; }
+    .contact-item small { display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+    .contact-item strong { display: block; font-size: 0.9rem; color: var(--text-primary); }
+    .maps-placeholder { margin-top: 1rem; padding: 1.5rem; border-radius: var(--radius-md); text-align: center; color: var(--text-secondary); }
+    .maps-placeholder i { font-size: 2rem; color: var(--eco-green-light); margin-bottom: 0.5rem; display: block; }
+    .maps-placeholder p { font-size: 0.88rem; margin: 0; }
+    .contact-form-wrapper { padding: 2rem; }
+    .contact-form-wrapper h4 { font-family: var(--font-display); font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; }
+    .form-group-eco { margin-bottom: 0; }
+    .form-group-eco label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; }
+    .eco-input { background: var(--bg-card) !important; border: 1.5px solid var(--border-glass) !important; color: var(--text-primary) !important; border-radius: var(--radius-md) !important; padding: 0.75rem 1rem !important; font-size: 0.92rem; transition: var(--transition); }
+    .eco-input::placeholder { color: var(--text-muted) !important; }
+    .eco-input:focus { border-color: var(--eco-green) !important; box-shadow: 0 0 0 3px var(--eco-green-dim) !important; outline: none; background: var(--bg-card-hover) !important; }
+    .eco-input.error { border-color: #ff6b6b !important; }
+    .form-error { font-size: 0.78rem; color: #ff6b6b; margin-top: 0.3rem; display: none; }
+    .form-error.visible { display: block; }
+    .form-success-msg { text-align: center; padding: 2rem; color: var(--eco-green-light); }
+    .form-success-msg i { font-size: 3rem; margin-bottom: 0.5rem; display: block; }
+    .form-success-msg p { font-size: 1rem; color: var(--text-secondary); }
+
+    .eco-footer { background: var(--bg-primary); border-top: 1px solid var(--border-color); padding: 3rem 0 2rem; }
+    .footer-logo { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 1.2rem; }
+    .footer-logo i { color: var(--eco-green-light); }
+    .footer-quote { font-style: italic; color: var(--text-muted); font-size: 0.88rem; max-width: 550px; margin: 0 auto 1.5rem; line-height: 1.8; }
+    .footer-quote .fa-quote-left, .footer-quote .fa-quote-right { color: var(--eco-green-light); opacity: 0.5; font-size: 0.75rem; }
+    .footer-socials { display: flex; justify-content: center; gap: 0.6rem; margin-bottom: 1.5rem; }
+    .footer-divider { width: 100%; height: 1px; background: var(--border-glass); margin-bottom: 1.2rem; }
+    .footer-copy { font-size: 0.82rem; color: var(--text-muted); margin: 0; }
+
+    .back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; background: var(--gradient-eco); border: none; border-radius: 50%; color: white; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 20px rgba(46,139,87,0.4); transition: var(--transition); opacity: 0; visibility: hidden; z-index: 999; display: flex; align-items: center; justify-content: center; }
+    .back-to-top.visible { opacity: 1; visibility: visible; }
+    .back-to-top:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(46,139,87,0.5); }
+
+    @media (max-width: 991px) {
+      #navMenu { background: var(--bg-glass); backdrop-filter: blur(20px); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1rem; margin-top: 1rem; }
+      .theme-toggle { margin-top: 0.5rem; }
+      .hero-text { text-align: center; }
+      .hero-buttons { justify-content: center; }
+      .hero-socials { justify-content: center; }
+      .hero-desc { margin: 0 auto 2rem; }
+      .hero-image-col { margin-top: 2rem; }
+      .floating-badge { display: none; }
+      .timeline::before { left: 20px; }
+      .timeline-item, .timeline-item.right { width: 100%; left: 0; padding-left: 4rem; padding-right: 0; }
+      .timeline-dot { left: 0; right: auto; top: 1.2rem; }
+      .timeline-item.right .timeline-dot { left: 0; }
+    }
+    @media (max-width: 576px) {
+      .section-padding { padding: 70px 0; }
+      .hero-name { font-size: 2.2rem; }
+      .hero-buttons { flex-direction: column; }
+      .hero-buttons .btn-eco { width: 100%; justify-content: center; }
+      .hero-image-wrapper { width: 240px; height: 240px; }
+      .profile-img-container { width: 170px; height: 170px; }
+    }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(46,139,87,0.2); } 50% { box-shadow: 0 0 40px rgba(46,139,87,0.4); } }
+    .profile-img-container { animation: glow 4s ease-in-out infinite; }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== LOADING SCREEN ==================== -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-ring"></div>
+      <div class="loader-icon"><i class="fa-solid fa-leaf"></i></div>
+      <p class="loader-text">Initializing...</p>
+    </div>
+  </div>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav id="navbar" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#home">
+        <span class="brand-icon"><i class="fa-solid fa-seedling"></i></span>
+        <span class="brand-text">Eco<span class="brand-accent">Eng</span></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="toggler-line"></span>
+        <span class="toggler-line"></span>
+        <span class="toggler-line"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Pelatihan</a></li>
+          <li class="nav-item"><a class="nav-link" href="#experience">Pendidikan</a></li>
+          <li class="nav-item"><a class="nav-link" href="#certificates">Sertifikat</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle ms-lg-3" title="Toggle Theme">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="home" class="hero-section">
+    <canvas id="heroCanvas"></canvas>
+    <div class="eco-grid-overlay"></div>
+
+    <div class="container hero-container">
+      <div class="row align-items-center min-vh-100">
+
+        <!-- Hero Text -->
+        <div class="col-lg-7 hero-text" data-aos="fade-right" data-aos-duration="1000">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            <span>Semester 2 · Teknik Pengolahan Limbah</span>
+          </div>
+          <h1 class="hero-name">
+            Halo, Saya<br/>
+            <span class="name-highlight">Andhika Putra</span>
+          </h1>
+          <div class="hero-typed-wrapper">
+            <span class="typed-prefix">·</span>
+            <span id="typedText"></span>
+            <span class="typed-cursor">|</span>
+          </div>
+          <p class="hero-desc">
+            Mahasiswa D4 Teknik Pengolahan Limbah di PPNS. Fokus pada pengembangan kompetensi teknis dan keberlanjutan lingkungan industri.
+          </p>
+          <div class="hero-buttons">
+            <a href="#about" class="btn btn-eco btn-primary-eco">
+              <i class="fa-solid fa-user-astronaut"></i> Tentang Saya
+            </a>
+            <a href="#projects" class="btn btn-eco btn-outline-eco">
+              <i class="fa-solid fa-certificate"></i> Lihat Pelatihan
+            </a>
+          </div>
+          <!-- Social Quick Links (HERO) -->
+          <div class="hero-socials">
+            <a href="https://www.linkedin.com/in/andhika-assobirin-b82388405?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="social-pill"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://instagram.com/ndikka.5" target="_blank" class="social-pill"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://wa.me/6285813399228" target="_blank" class="social-pill"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Hero Profile Image -->
+        <div class="col-lg-5 hero-image-col" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+          <div class="hero-image-wrapper">
+            <div class="profile-ring ring-1"></div>
+            <div class="profile-ring ring-2"></div>
+            <div class="profile-ring ring-3"></div>
+            
+            <div class="profile-img-container">
+              <!-- FILE FOTO PROFIL JPG/JPEG -->
+              <img src="profil.jpeg" alt="Foto Andhika" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div class="profile-placeholder" style="display:none; width:100%; height:100%; justify-content:center; align-items:center;">
+                <i class="fa-solid fa-user-graduate" style="font-size: 5rem;"></i>
+              </div>
+            </div>
+
+            <!-- Floating Badges -->
+            <div class="floating-badge badge-top">
+              <i class="fa-solid fa-recycle"></i>
+              <span>Eco Learner</span>
+            </div>
+            <div class="floating-badge badge-bottom">
+              <i class="fa-solid fa-water"></i>
+              <span>Water Treatment</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+      <div class="scroll-mouse">
+        <div class="scroll-dot"></div>
+      </div>
+      <span>Scroll Down</span>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT SECTION ==================== -->
+  <section id="about" class="section-padding">
+    <div class="container">
+      <div class="section-header text-center" data-aos="fade-up">
+        <span class="section-label">01. About Me</span>
+        <h2 class="section-title">Kenali Lebih <span class="text-eco">Dekat</span></h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5" data-aos="fade-right" data-aos-delay="100">
+          <div class="about-card-wrapper">
+            <div class="about-img-card glass-card">
+              <div class="about-placeholder-img">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <p>Andhika Putra A.</p>
+                <small>Teknik Pengolahan Limbah</small>
+              </div>
+              <div class="about-tags">
+                <span class="about-tag"><i class="fa-solid fa-location-dot"></i> Surabaya, ID</span>
+                <span class="about-tag"><i class="fa-solid fa-calendar"></i> 2025 - Present</span>
+              </div>
+            </div>
+            <div class="edu-card glass-card">
+              <i class="fa-solid fa-building-columns edu-icon"></i>
+              <div>
+                <strong>Politeknik Perkapalan Negeri Surabaya</strong>
+                <small>D4 Teknik Pengolahan Limbah</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7" data-aos="fade-left" data-aos-delay="200">
+          <h3 class="about-heading">Future Waste Treatment Engineer</h3>
+          <p class="about-text">
+            Saya adalah mahasiswa semester 2 jurusan <strong>Teknik Pengolahan Limbah PPNS</strong> 
+            yang memiliki semangat belajar tinggi dalam bidang teknologi lingkungan, pengembangan diri, AutoCAD, dan keterampilan akademik.
+          </p>
+          <p class="about-text">
+            Meskipun masih di tahap awal perkuliahan, saya aktif mengikuti berbagai seminar, pelatihan, 
+            dan kegiatan pengembangan kompetensi. Saya berkomitmen untuk terus berkembang dan membangun fondasi 
+            profesional yang kuat sebagai calon engineer di masa depan.
+          </p>
+
+          <div class="row about-info-list">
+            <div class="col-6">
+              <div class="info-item"><i class="fa-solid fa-graduation-cap"></i><span>Semester 2</span></div>
+              <div class="info-item"><i class="fa-solid fa-building"></i><span>PPNS Surabaya</span></div>
+            </div>
+            <div class="col-6">
+              <div class="info-item"><i class="fa-solid fa-leaf"></i><span>Eco Learner</span></div>
+              <div class="info-item"><i class="fa-solid fa-envelope"></i><span>andhikaassobirin@gmail.com</span></div>
+            </div>
+          </div>
+
+          <div class="semester-progress" data-aos="fade-up" data-aos-delay="300">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="progress-label">Progress Semester</span>
+              <span class="progress-label">Semester 2 / 8</span>
+            </div>
+            <div class="progress eco-progress">
+              <div class="progress-bar eco-bar" style="width: 25%" role="progressbar">25%</div>
+            </div>
+          </div>
+
+          <div class="row stats-row g-3 mt-3">
+            <div class="col-4">
+              <div class="stat-card glass-card text-center">
+                <span class="stat-number" data-target="4">0</span>
+                <span class="stat-label">Pelatihan</span>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="stat-card glass-card text-center">
+                <span class="stat-number" data-target="3">0</span>
+                <span class="stat-label">Pendidikan</span>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="stat-card glass-card text-center">
+                <span class="stat-number" data-target="2">0</span>
+                <span class="stat-label">Sertifikat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SKILLS SECTION ==================== -->
+  <section id="skills" class="section-padding skills-section">
+    <div class="container">
+      <div class="section-header text-center" data-aos="fade-up">
+        <span class="section-label">02. My Skills</span>
+        <h2 class="section-title">Kemampuan & <span class="text-eco">Keahlian</span></h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+          <div class="skills-card glass-card">
+            <h4 class="skills-card-title">
+              <i class="fa-solid fa-laptop-code"></i> Hard Skills Dasar
+            </h4>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span><i class="fa-solid fa-pen-ruler"></i> AutoCAD (Basic 2D Design)</span>
+                <span class="skill-pct">65%</span>
+              </div>
+              <div class="progress eco-progress">
+                <div class="progress-bar eco-bar animated-bar" data-width="65"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span><i class="fa-solid fa-file-excel"></i> Microsoft Excel & Word</span>
+                <span class="skill-pct">75%</span>
+              </div>
+              <div class="progress eco-progress">
+                <div class="progress-bar eco-bar animated-bar" data-width="75"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span><i class="fa-solid fa-industry"></i> Dasar Pengolahan Limbah</span>
+                <span class="skill-pct">50%</span>
+              </div>
+              <div class="progress eco-progress">
+                <div class="progress-bar eco-bar animated-bar" data-width="50"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span><i class="fa-brands fa-html5"></i> HTML / CSS / JS Dasar</span>
+                <span class="skill-pct">40%</span>
+              </div>
+              <div class="progress eco-progress">
+                <div class="progress-bar eco-bar animated-bar" data-width="40"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+          <div class="skills-card glass-card">
+            <h4 class="skills-card-title">
+              <i class="fa-solid fa-brain"></i> Soft Skills
+            </h4>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span><i class="fa-solid fa-clock"></i> Disiplin Waktu</span>
+                <span class="skill-pct">90%</span>
+              </div>
+              <div class="progress eco-progress">
+                <div class="progress-bar eco-bar animated-bar" data-width="90"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span><i class="fa-solid fa-people-group"></i> Kerja Sama Tim</span>
+                <span class="skill-pct">85%</span>
+              </div>
+              <div class="progress eco-progress">
+                <div class="progress-bar eco-bar animated-bar" data-width="85"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span><i class="fa-solid fa-comments"></i> Komunikasi Efektif</span>
+                <span class="skill-pct">80%</span>
+              </div>
+              <div class="progress eco-progress">
+                <div class="progress-bar eco-bar animated-bar" data-width="80"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-header">
+                <span><i class="fa-solid fa-seedling"></i> Adaptasi Cepat</span>
+                <span class="skill-pct">85%</span>
+              </div>
+              <div class="progress eco-progress">
+                <div class="progress-bar eco-bar animated-bar" data-width="85"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12" data-aos="fade-up" data-aos-delay="300">
+          <div class="skill-badges-wrapper glass-card">
+            <h5 class="mb-3"><i class="fa-solid fa-tags"></i> Karakter Personal</h5>
+            <div class="skill-badges">
+              <span class="skill-badge"><i class="fa-solid fa-check"></i> Disiplin</span>
+              <span class="skill-badge"><i class="fa-solid fa-check"></i> Mau Belajar</span>
+              <span class="skill-badge"><i class="fa-solid fa-check"></i> Teamwork</span>
+              <span class="skill-badge"><i class="fa-solid fa-check"></i> Komunikatif</span>
+              <span class="skill-badge"><i class="fa-solid fa-check"></i> Adaptif</span>
+              <span class="skill-badge"><i class="fa-solid fa-check"></i> Berorientasi Berkembang</span>
+              <span class="skill-badge"><i class="fa-solid fa-check"></i> Manajemen Diri</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PELATIHAN & PENGEMBANGAN DIRI SECTION ==================== -->
+  <section id="projects" class="section-padding">
+    <div class="container">
+      <div class="section-header text-center" data-aos="fade-up">
+        <span class="section-label">03. Training & Certification</span>
+        <h2 class="section-title">Pelatihan & <span class="text-eco">Pengembangan Diri</span></h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="project-card glass-card" data-project="1">
+            <div class="project-card-img industrial-bg">
+              <i class="fa-solid fa-pen-ruler project-icon"></i>
+              <span class="project-badge">Technical</span>
+            </div>
+            <div class="project-card-body">
+              <h5>Pelatihan AutoCAD</h5>
+              <p>Mempelajari dasar-dasar desain 2D menggunakan software AutoCAD untuk keperluan engineering.</p>
+              <div class="project-tags">
+                <span>HIMATEKPL</span><span>Desain 2D</span><span>Drafting</span>
+              </div>
+              <button class="btn btn-eco btn-sm btn-primary-eco w-100 mt-3" onclick="openModal(1)">
+                <i class="fa-solid fa-eye"></i> Lihat Detail
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="200">
+          <div class="project-card glass-card" data-project="2">
+            <div class="project-card-img water-bg">
+              <i class="fa-solid fa-users-cog project-icon"></i>
+              <span class="project-badge">Leadership</span>
+            </div>
+            <div class="project-card-body">
+              <h5>LKMM Pra-TD 2025</h5>
+              <p>Latihan Keterampilan Manajemen Mahasiswa Tingkat Dasar untuk melatih jiwa kepemimpinan.</p>
+              <div class="project-tags">
+                <span>Kepemimpinan</span><span>Manajemen</span><span>Organisasi</span>
+              </div>
+              <button class="btn btn-eco btn-sm btn-primary-eco w-100 mt-3" onclick="openModal(2)">
+                <i class="fa-solid fa-eye"></i> Lihat Detail
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="300">
+          <div class="project-card glass-card" data-project="3">
+            <div class="project-card-img green-bg">
+              <i class="fa-solid fa-leaf project-icon"></i>
+              <span class="project-badge">Seminar</span>
+            </div>
+            <div class="project-card-body">
+              <h5>Seminar Envitreuners</h5>
+              <p>Mendapatkan insight tentang kewirausahaan berbasis lingkungan hidup (Eco-preneurship).</p>
+              <div class="project-tags">
+                <span>Kewirausahaan</span><span>Lingkungan</span><span>Bisnis</span>
+              </div>
+              <button class="btn btn-eco btn-sm btn-primary-eco w-100 mt-3" onclick="openModal(3)">
+                <i class="fa-solid fa-eye"></i> Lihat Detail
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="400">
+          <div class="project-card glass-card" data-project="4">
+            <div class="project-card-img solid-bg">
+              <i class="fa-solid fa-microscope project-icon"></i>
+              <span class="project-badge">Conference</span>
+            </div>
+            <div class="project-card-body">
+              <h5>CPWTT 8.0</h5>
+              <p>Mengikuti Conference on Waste Treatment Technology untuk memperluas wawasan akademik.</p>
+              <div class="project-tags">
+                <span>Teknologi Limbah</span><span>Akademik</span><span>Riset</span>
+              </div>
+              <button class="btn btn-eco btn-sm btn-primary-eco w-100 mt-3" onclick="openModal(4)">
+                <i class="fa-solid fa-eye"></i> Lihat Detail
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TRAINING MODALS ==================== -->
+  <div class="modal fade eco-modal" id="projectModal1" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content glass-card">
+        <div class="modal-header border-0">
+          <h5 class="modal-title"><i class="fa-solid fa-pen-ruler text-eco"></i> Pelatihan AutoCAD HIMATEKPL 2025</h5>
+          <button type="button" class="btn-close-eco" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-badge-row">
+            <span class="modal-badge active">Technical Skill</span>
+            <span class="modal-date"><i class="fa-regular fa-calendar"></i> Tahun 2025</span>
+          </div>
+          <p>Pelatihan intensif penggunaan perangkat lunak AutoCAD yang diselenggarakan oleh Himpunan Mahasiswa Teknik Pengolahan Limbah (HIMATEKPL). Pelatihan ini bertujuan untuk membekali mahasiswa dengan keahlian dasar perancangan desain teknik:</p>
+          <div class="modal-tech-list">
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Pengenalan antarmuka dasar AutoCAD</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Pembuatan garis, bentuk dasar, dan modifikasi objek 2D</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Pemahaman layer, dimensi, dan toleransi</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Membaca dan membuat desain layout sederhana</div>
+          </div>
+          <p class="mt-3"><strong>Output:</strong> Peningkatan kemampuan teknis dalam memvisualisasikan ide desain dan perancangan dasar untuk IPAL maupun instalasi lingkungan lainnya.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade eco-modal" id="projectModal2" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content glass-card">
+        <div class="modal-header border-0">
+          <h5 class="modal-title"><i class="fa-solid fa-users-cog text-eco"></i> LKMM Pra-TD 2025</h5>
+          <button type="button" class="btn-close-eco" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-badge-row">
+            <span class="modal-badge active">Leadership</span>
+            <span class="modal-date"><i class="fa-regular fa-calendar"></i> Tahun 2025</span>
+          </div>
+          <p>Latihan Keterampilan Manajemen Mahasiswa Pra-Tingkat Dasar (LKMM Pra-TD) adalah kegiatan wajib untuk melatih soft skill kepemimpinan, manajemen waktu, dan keorganisasian bagi mahasiswa baru.</p>
+          <div class="modal-tech-list">
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Manajemen waktu dan prioritas akademik</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Simulasi penyelesaian masalah (Problem Solving) dalam tim</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Pengembangan karakter dan integritas mahasiswa</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Komunikasi efektif di lingkungan kampus dan profesional</div>
+          </div>
+          <p class="mt-3"><strong>Output:</strong> Terbangunnya sikap disiplin, mampu bekerja dalam tekanan, serta kolaborasi tim yang solid.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade eco-modal" id="projectModal3" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content glass-card">
+        <div class="modal-header border-0">
+          <h5 class="modal-title"><i class="fa-solid fa-leaf text-eco"></i> Seminar Kewirausahaan Envitreuners</h5>
+          <button type="button" class="btn-close-eco" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-badge-row">
+            <span class="modal-badge active">Seminar</span>
+            <span class="modal-date"><i class="fa-regular fa-calendar"></i> Tahun 2025</span>
+          </div>
+          <p><strong>"Enviro Know About Entrepreneurship"</strong> adalah seminar kewirausahaan yang dibuat untuk membekali mahasiswa Teknik Pengolahan Limbah angkatan 2025 dengan pengetahuan, motivasi, dan inspirasi dalam berwirausaha.</p>
+          <div class="modal-tech-list">
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Pemasaran di era digital</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Inovasi produk berwawasan lingkungan</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Kepemimpinan dalam berbisnis</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Manajemen resiko dan pengembangan bisnis berkelanjutan</div>
+          </div>
+          <p class="mt-3"><strong>Output:</strong> Envitreuners membahas topik-topik kewirausahaan yang penting bagi generasi masa kini untuk membangun mindset entrepreneurship yang peduli terhadap lingkungan.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade eco-modal" id="projectModal4" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content glass-card">
+        <div class="modal-header border-0">
+          <h5 class="modal-title"><i class="fa-solid fa-microscope text-eco"></i> Conference on Waste Treatment Technology (CPWTT 8.0)</h5>
+          <button type="button" class="btn-close-eco" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-badge-row">
+            <span class="modal-badge active">Conference</span>
+            <span class="modal-date"><i class="fa-regular fa-calendar"></i> Tahun 2025</span>
+          </div>
+          <p>Konferensi tahunan akademisi dan praktisi bidang pengolahan limbah tingkat nasional. Sebagai peserta, saya berkesempatan mengikuti pemaparan riset-riset terbaru dalam teknologi lingkungan.</p>
+          <div class="modal-tech-list">
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Inovasi pengolahan limbah cair B3 (Bahan Berbahaya dan Beracun)</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Pemanfaatan biomassa sebagai energi terbarukan</div>
+            <div class="modal-tech-item"><i class="fa-solid fa-check-circle text-eco"></i> Pemaparan jurnal akademisi PPNS dan universitas lainnya</div>
+          </div>
+          <p class="mt-3"><strong>Output:</strong> Wawasan berharga mengenai tren teknologi lingkungan modern dan standar riset akademik.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== EDUCATION SECTION ==================== -->
+  <section id="experience" class="section-padding experience-section">
+    <div class="container">
+      <div class="section-header text-center" data-aos="fade-up">
+        <span class="section-label">04. Education</span>
+        <h2 class="section-title">Riwayat <span class="text-eco">Pendidikan</span></h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+          <div class="timeline-dot">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+          <div class="timeline-content glass-card">
+            <div class="timeline-header">
+              <span class="timeline-badge org">Pendidikan Tinggi</span>
+              <span class="timeline-date">2025 - Sekarang</span>
+            </div>
+            <h5>D4 Teknik Pengolahan Limbah</h5>
+            <p class="timeline-role">Politeknik Perkapalan Negeri Surabaya (PPNS)</p>
+            <p>Mahasiswa aktif semester 2. Mempelajari fundamental rekayasa pengolahan air limbah, K3, analisis lingkungan, dan desain engineering dasar.</p>
+            <div class="timeline-tags"><span>Mahasiswa</span><span>Engineering</span><span>PPNS</span></div>
+          </div>
+        </div>
+
+        <div class="timeline-item right" data-aos="fade-left" data-aos-delay="200">
+          <div class="timeline-dot">
+            <i class="fa-solid fa-school"></i>
+          </div>
+          <div class="timeline-content glass-card">
+            <div class="timeline-header">
+              <span class="timeline-badge volunteer">Sekolah Menengah Atas</span>
+              <span class="timeline-date">2022 - 2025</span>
+            </div>
+            <h5>SMA Negeri 1 Krian</h5>
+            <p class="timeline-role">Jurusan MIPA (Ilmu Pengetahuan Alam)</p>
+            <p>Fokus pada ilmu eksakta, biologi, kimia, dan pengembangan logika berpikir analitis yang kini menjadi bekal kuat di dunia perkuliahan teknik.</p>
+            <div class="timeline-tags"><span>Science</span><span>MIPA</span></div>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+          <div class="timeline-dot">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+          <div class="timeline-content glass-card">
+            <div class="timeline-header">
+              <span class="timeline-badge workshop">Pendidikan Dasar</span>
+              <span class="timeline-date">Lulus 2022</span>
+            </div>
+            <h5>SMPN 1 Krian</h5>
+            <p class="timeline-role">Pendidikan Menengah Pertama</p>
+            <p>Menyelesaikan pendidikan dasar dengan baik dan mulai menumbuhkan ketertarikan pada ilmu pengetahuan.</p>
+            <div class="timeline-tags"><span>Education</span><span>Basic</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CERTIFICATES SECTION ==================== -->
+  <section id="certificates" class="section-padding">
+    <div class="container">
+      <div class="section-header text-center" data-aos="fade-up">
+        <span class="section-label">05. Certificates</span>
+        <h2 class="section-title">Dokumentasi <span class="text-eco">Sertifikat</span></h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="row g-4 justify-content-center">
+        <!-- Certificate 1 -->
+        <div class="col-md-6 col-lg-5" data-aos="fade-up" data-aos-delay="100">
+          <div class="cert-card glass-card">
+            <div class="cert-header-flex">
+              <div class="cert-icon-wrapper">
+                <i class="fa-solid fa-award cert-icon"></i>
+              </div>
+              <div class="cert-body">
+                <span class="cert-issuer">HIMATEKPL</span>
+                <h6>Sertifikat Pelatihan AutoCAD Dasar</h6>
+                <span class="cert-date"><i class="fa-regular fa-calendar"></i> Tahun 2025</span>
+                
+                <!-- FILE SERTIFIKAT AUTOCAD PNG -->
+                <a href="sertif-autocad.png" target="_blank" class="btn btn-eco btn-sm btn-outline-eco mt-1">
+                  <i class="fa-solid fa-image"></i> Lihat Dokumen
+                </a>
+              </div>
+            </div>
+            <div class="cert-ribbon"></div>
+          </div>
+        </div>
+
+        <!-- Certificate 2 -->
+        <div class="col-md-6 col-lg-5" data-aos="fade-up" data-aos-delay="200">
+          <div class="cert-card glass-card">
+            <div class="cert-header-flex">
+              <div class="cert-icon-wrapper">
+                <i class="fa-solid fa-medal cert-icon"></i>
+              </div>
+              <div class="cert-body">
+                <span class="cert-issuer">Academic Conference</span>
+                <h6>Sertifikat Peserta CPWTT 8.0</h6>
+                <span class="cert-date"><i class="fa-regular fa-calendar"></i> Tahun 2025</span>
+                
+                <a href="sertif-cpwtt.pdf" target="_blank" class="btn btn-eco btn-sm btn-outline-eco mt-1">
+                  <i class="fa-solid fa-file-pdf"></i> Lihat Dokumen
+                </a>
+              </div>
+            </div>
+            <div class="cert-ribbon"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT SECTION ==================== -->
+  <section id="contact" class="section-padding contact-section">
+    <div class="container">
+      <div class="section-header text-center" data-aos="fade-up">
+        <span class="section-label">06. Contact</span>
+        <h2 class="section-title">Hubungi <span class="text-eco">Saya</span></h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="row g-5">
+        <div class="col-lg-5" data-aos="fade-right" data-aos-delay="100">
+          <div class="contact-info">
+            <p class="contact-intro">
+              Tertarik untuk berdiskusi tentang lingkungan, waste treatment, akademik, 
+              ataupun peluang pengembangan diri? Jangan ragu menghubungi saya!
+            </p>
+            <div class="contact-items">
+              <div class="contact-item glass-card">
+                <div class="contact-item-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div>
+                  <small>Email</small>
+                  <strong>andhikaassobirin@gmail.com</strong>
+                </div>
+              </div>
+              <div class="contact-item glass-card">
+                <div class="contact-item-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                <div>
+                  <small>WhatsApp</small>
+                  <strong>+62 858-1339-9228</strong>
+                </div>
+              </div>
+              <div class="contact-item glass-card">
+                <div class="contact-item-icon"><i class="fa-brands fa-linkedin-in"></i></div>
+                <div>
+                  <small>LinkedIn</small>
+                  <strong>Andhika Putra Assobirin</strong>
+                </div>
+              </div>
+              <div class="contact-item glass-card">
+                <div class="contact-item-icon"><i class="fa-brands fa-instagram"></i></div>
+                <div>
+                  <small>Instagram</small>
+                  <strong>@ndikka.5</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="maps-placeholder glass-card">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <p>Politeknik Perkapalan Negeri Surabaya<br/><small>Surabaya, Indonesia</small></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7" data-aos="fade-left" data-aos-delay="200">
+          <div class="contact-form-wrapper glass-card">
+            <h4 class="mb-4"><i class="fa-solid fa-paper-plane text-eco"></i> Kirim Pesan</h4>
+            <form id="contactForm" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="form-group-eco">
+                    <label>Nama Lengkap *</label>
+                    <input type="text" id="formName" class="form-control eco-input" placeholder="Nama kamu..." required/>
+                    <div class="form-error" id="nameError">Nama tidak boleh kosong</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group-eco">
+                    <label>Email *</label>
+                    <input type="email" id="formEmail" class="form-control eco-input" placeholder="email@contoh.com" required/>
+                    <div class="form-error" id="emailError">Email tidak valid</div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group-eco">
+                    <label>Subjek *</label>
+                    <input type="text" id="formSubject" class="form-control eco-input" placeholder="Topik pembicaraan..." required/>
+                    <div class="form-error" id="subjectError">Subjek tidak boleh kosong</div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group-eco">
+                    <label>Pesan *</label>
+                    <textarea id="formMessage" class="form-control eco-input" rows="5" placeholder="Tulis pesanmu di sini..." required></textarea>
+                    <div class="form-error" id="messageError">Pesan tidak boleh kosong</div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-eco btn-primary-eco w-100 btn-lg">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Pesan
+                  </button>
+                </div>
+              </div>
+            </form>
+            <div id="formSuccess" class="form-success-msg" style="display:none;">
+              <i class="fa-solid fa-circle-check"></i>
+              <p>Pesan berhasil terkirim! Saya akan segera membalas. 🌿</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="eco-footer">
+    <div class="container">
+      <div class="footer-content text-center">
+        <div class="footer-logo">
+          <i class="fa-solid fa-seedling"></i>
+          <span>Eco<span class="brand-accent">Eng</span></span>
+        </div>
+        <p class="footer-quote">
+          <i class="fa-solid fa-quote-left"></i>
+          "Learning today, engineering tomorrow. Building competence step by step."
+          <i class="fa-solid fa-quote-right"></i>
+        </p>
+        <div class="footer-socials">
+          <a href="https://www.linkedin.com/in/andhika-assobirin-b82388405?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="social-pill"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://instagram.com/ndikka.5" target="_blank" class="social-pill"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://wa.me/6285813399228" target="_blank" class="social-pill"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="mailto:andhikaassobirin@gmail.com" class="social-pill"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+        <div class="footer-divider"></div>
+        <p class="footer-copy">
+          &copy; 2026 Andhika Putra Assobirin · Teknik Pengolahan Limbah · Made with 
+          <i class="fa-solid fa-heart text-eco"></i> & 
+          <i class="fa-solid fa-leaf text-eco"></i> for a greener future
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="back-to-top" title="Back to Top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <!-- ==================== CDN SCRIPTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+  
+  <script>
+    window.addEventListener('load', function () {
+      const loader = document.getElementById('loader');
+      setTimeout(() => { loader.classList.add('hidden'); }, 1500);
+    });
+
+    AOS.init({ duration: 800, once: true, offset: 80, easing: 'ease-out-cubic' });
+
+    const typedInstance = new Typed('#typedText', {
+      strings: [
+        'D4 Waste Treatment Engineering Student',
+        'Active & Continuous Learner',
+        'AutoCAD & Excel Learner',
+        'Future Environmental Engineer'
+      ],
+      typeSpeed: 55, backSpeed: 30, backDelay: 2000, loop: true, showCursor: false
+    });
+
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon   = document.getElementById('themeIcon');
+    const htmlEl      = document.documentElement;
+    const savedTheme = localStorage.getItem('ecoTheme') || 'dark';
+    htmlEl.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const current = htmlEl.getAttribute('data-theme');
+      const next    = current === 'dark' ? 'light' : 'dark';
+      htmlEl.setAttribute('data-theme', next);
+      localStorage.setItem('ecoTheme', next);
+      updateThemeIcon(next);
+    });
+
+    function updateThemeIcon(theme) {
+      if (theme === 'dark') { themeIcon.className = 'fa-solid fa-moon'; } 
+      else { themeIcon.className = 'fa-solid fa-sun'; }
+    }
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) { navbar.classList.add('scrolled'); } 
+      else { navbar.classList.remove('scrolled'); }
+    });
+
+    const sections  = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.nav-link');
+    const spyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${id}`) { link.classList.add('active'); }
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => spyObserver.observe(s));
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const navbarCollapse = document.getElementById('navMenu');
+        if (navbarCollapse.classList.contains('show')) {
+          const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapse);
+          bsCollapse.hide();
+        }
+      });
+    });
+
+    const animatedBars = document.querySelectorAll('.animated-bar');
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bar = entry.target;
+          const width = bar.getAttribute('data-width');
+          bar.style.width = width + '%';
+          barObserver.unobserve(bar);
+        }
+      });
+    }, { threshold: 0.3 });
+    animatedBars.forEach(bar => barObserver.observe(bar));
+
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.getAttribute('data-target'));
+          let current = 0;
+          const step = target / 40;
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            el.textContent = Math.floor(current);
+          }, 40);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    statNumbers.forEach(n => counterObserver.observe(n));
+
+    const semesterBar = document.querySelector('.eco-progress .eco-bar:not(.animated-bar)');
+    if (semesterBar) {
+      const semBarObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            semesterBar.style.width = '25%';
+            semBarObserver.unobserve(semesterBar);
+          }
+        });
+      }, { threshold: 0.5 });
+      semBarObserver.observe(semesterBar);
+    }
+
+    const canvas = document.getElementById('heroCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animFrameId;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.5 + 0.1;
+        this.color = Math.random() > 0.5 ? `rgba(46, 139, 87, ${this.opacity})` : `rgba(0, 119, 182, ${this.opacity})`;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) { this.reset(); }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.min(80, Math.floor(canvas.width / 15));
+      for (let i = 0; i < count; i++) { particles.push(new Particle()); }
+    }
+
+    function drawConnections() {
+      const maxDist = 120;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < maxDist) {
+            const alpha = (1 - dist / maxDist) * 0.15;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(46, 139, 87, ${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      drawConnections();
+      animFrameId = requestAnimationFrame(animateParticles);
+    }
+    initParticles();
+    animateParticles();
+
+    function openModal(num) {
+      const modalEl = document.getElementById(`projectModal${num}`);
+      const bsModal = new bootstrap.Modal(modalEl);
+      bsModal.show();
+    }
+
+    const contactForm = document.getElementById('contactForm');
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      let isValid = true;
+      clearErrors();
+      const name = document.getElementById('formName').value.trim();
+      const email = document.getElementById('formEmail').value.trim();
+      const subject = document.getElementById('formSubject').value.trim();
+      const message = document.getElementById('formMessage').value.trim();
+
+      if (name.length < 2) { showError('formName', 'nameError', 'Nama minimal 2 karakter'); isValid = false; }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) { showError('formEmail', 'emailError', 'Format email tidak valid'); isValid = false; }
+      if (subject.length < 3) { showError('formSubject', 'subjectError', 'Subjek minimal 3 karakter'); isValid = false; }
+      if (message.length < 10) { showError('formMessage', 'messageError', 'Pesan minimal 10 karakter'); isValid = false; }
+
+      if (isValid) {
+        contactForm.style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+        setTimeout(() => {
+          contactForm.reset();
+          contactForm.style.display = 'block';
+          document.getElementById('formSuccess').style.display = 'none';
+        }, 4000);
+      }
+    });
+
+    function showError(inputId, errorId, message) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      input.classList.add('error');
+      error.textContent = message;
+      error.classList.add('visible');
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.eco-input').forEach(input => { input.classList.remove('error'); });
+      document.querySelectorAll('.form-error').forEach(err => { err.classList.remove('visible'); });
+    }
+
+    document.querySelectorAll('.eco-input').forEach(input => {
+      input.addEventListener('input', () => {
+        input.classList.remove('error');
+        const errorEl = document.getElementById(input.id.replace('form', '').toLowerCase() + 'Error');
+        if (errorEl) errorEl.classList.remove('visible');
+      });
+    });
+
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) { backToTopBtn.classList.add('visible'); } 
+      else { backToTopBtn.classList.remove('visible'); }
+    });
+    backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const midX = rect.width / 2;
+        const midY = rect.height / 2;
+        const rotateX = ((y - midY) / midY) * -4;
+        const rotateY = ((x - midX) / midX) * 4;
+        card.style.transform = `translateY(-8px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.transition = 'all 0.5s ease';
+      });
+    });
+
+    document.querySelectorAll('.skill-badge').forEach(badge => {
+      badge.addEventListener('click', function (e) {
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3); width: 100px; height: 100px; left: ${e.offsetX - 50}px; top: ${e.offsetY - 50}px; transform: scale(0); animation: rippleAnim 0.5s linear; pointer-events: none;`;
+        this.style.position = 'relative';
+        this.style.overflow = 'hidden';
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 500);
+      });
+    });
+    const rippleStyle = document.createElement('style');
+    rippleStyle.textContent = `@keyframes rippleAnim { to { transform: scale(3); opacity: 0; } }`;
+    document.head.appendChild(rippleStyle);
+
+    document.querySelectorAll('.cert-card').forEach(card => {
+      card.addEventListener('mouseenter', () => { card.style.boxShadow = '0 0 30px rgba(46, 139, 87, 0.2), 0 12px 40px rgba(0,0,0,0.4)'; });
+      card.addEventListener('mouseleave', () => { card.style.boxShadow = ''; });
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        const navbarCollapse = document.getElementById('navMenu');
+        if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+          const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapse);
+          bsCollapse.hide();
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>
